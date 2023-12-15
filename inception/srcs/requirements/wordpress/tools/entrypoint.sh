@@ -5,17 +5,24 @@
 #######################################################
 #       Install wordpress for our website             #
 #######################################################
-# Download wordpress files
+# Download core wordpress files to the public html, wordpress directory
 wp core download --path=$WP_PATH --allow-root
-chown -R www-data /var/www/html/wordpress
-chmod -R 775 /var/www/
+ls -la $WP_PATH 
+chown -R www-data  $WP_PATH 
+chmod -R 755 /var/www/
+
+if ![-f $WP_PATH/wp_config.php]; then
+    echo "wp_config.php file not found";
+else
+    echo "wp_config.php is found";
+fi
 #######################################################
+cd $WP_PATH 
 # Creates a new wp-config.php with database constants
-# config create not working
-# wp config create --path=$WP_PATH --allow-root --dbhost=$DB_HOST --dbname=$DB_DATABASE --dbprefix=$DB_TABLE_PREFIX --dbuser=$DB_USER --dbpass=$DB_PASSWORD
+wp config create --allow-root --dbhost=$DB_HOST --dbname=$DB_DATABASE --dbprefix=$DB_TABLE_PREFIX --dbuser=$DB_USER --dbpass=$DB_PASSWORD
 # wp config create --allow-root --dbhost=$DB_HOST --dbname=$DB_DATABASE --dbprefix=$DB_TABLE_PREFIX --dbuser=$DB_USER --dbpass=$DB_PASSWORD --path="."
 # Error: Database connection error (1045) Access denied for user 'user'@'wordpress.inception-db' (using password: NO)
-cd $WP_PATH && cp wp-config-sample.php wp-config.php
+cp wp-config-sample.php wp-config.php
 
 #######################################################
 # Udate wp-config.php with environment variables
@@ -33,7 +40,7 @@ wp config shuffle-salts --allow-root
 echo "wp-config.php file generated"
 wp config list --allow-root
 
-
+# Runs the standard WordPress installation process.
 # https://developer.wordpress.org/cli/commands/core/install/
 wp core install --allow-root \
     --path="." \
