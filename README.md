@@ -4,7 +4,7 @@
 
 #### Prerequisites
 
-`Virtualbox manager` and `Vagrant` should be installed
+`Virtualbox manager` and `Vagrant` should be installed.
 
 #### Virtual machine 
 
@@ -20,7 +20,28 @@ The command `vagrant up` will build the `VM`.
 
 ##### wordpress-CLI 
 
-    [](https://www.hostinger.fr/tutoriels/wp-cli)
+[wp-CLI](https://www.hostinger.fr/tutoriels/wp-cli)
+
+##### wp-config.php file
+
+[Le fichier wp-config.php de WordPress : Optimisation, sécurité ](https://www.wpserveur.net/fichier-wp-config-wordpress/)
+
+[wp-config file](https://themes.artbees.net/blog/configuring-wordpress-in-wpconfig-php-file/)
+
+[why you should protect you wp-config file ](https://medium.com/stolabs/why-should-you-protect-your-wp-config-php-file-d1d1e6c0d6e6)
+
+Add the following line to nginx configuration file 
+`location ~* wp-config.php { deny all; }`
+
+##### MariaDB
+
+[installing-and-using-mariadb](https://mariadb.com/kb/en/installing-and-using-mariadb-via-docker/)
+
+[ALTER USER](https://dev.mysql.com/doc/refman/8.0/en/alter-user.html)
+`ALTER USER root@localhost IDENTIFIED BY PASSWORD '************';`
+
+forcing a TCP connection
+`mysql -h 172.17.0.2 -P 3306 --protocol=TCP -u root -p`
 
 
 ### Evaluation
@@ -50,7 +71,8 @@ cat /etc/mysql/mariadb.conf.d/50-server.cnf
 [MariaDB doc](https://mariadb.com/kb/en/using-mariadb-server/)
 [SQL statements](https://mariadb.com/kb/en/sql-statements/)
 start mysql to check users and database :
-`mysql
+```sql
+$ mysql
 MariaDB [(none)]> SELECT user,host,password FROM mysql.user;
 MariaDB [(none)]> SHOW databases; 
 MariaDB [(none)]> USE wordpress;
@@ -58,17 +80,21 @@ MariaDB [wordpress]> SHOW TABLES;
 MariaDB [wordpress]> SELECT * FROM wp_users;
 SELECT ID, user_login, user_email FROM wp_users;
 SHOW COLUMNS FROM wp_posts;
- SELECT ID, post_author, post_date, post_title  FROM wp_posts;
-
+SELECT ID, post_author, post_date, post_title  FROM wp_posts;
+```
 from mariadb container :
 | connect as root
 `mysql --user=root mysql`
 `mysql -u root -p`
 
+`SHOW GRANTS FOR 'root'@'localhost';`
+
 from wordpress container :
 
 #### Wordpress database
+
 [Wordpress database scheme](https://codex.wordpress.org/Database_Description)
+
 [wordpress-database-schema](https://blogvault.net/wordpress-database-schema/)
 
 

@@ -30,15 +30,14 @@ clean: stop
 fclean: clean
 # Remove one or more images. -f Force removal of the image
 	docker rmi -f $$(docker images -qa) >> /dev/null
-# docker volume rm $$(docker volume ls) >> /dev/null
+# docker volume rm $$(docker volume ls | grep ) >> /dev/null
 # docker network rm $$(docker network ls) >> /dev/null
 
 prune: down
 	docker image prune -a
 	sudo rm -rf $(VOLUMES_DIR)
-	# docker compose -f $(VOLUMES_DIR) down --remove-orphans
-	# docker compose -f $(VOLUMES_DIR) down --volumes
-	# docker compose rm -f
+	docker compose -f $(DOCKER-COMPOSE) down --remove-orphans
+	docker compose -f $(DOCKER-COMPOSE) down --volumes
 
 re: fclean all
 	
@@ -61,6 +60,7 @@ test:
 setup:
 	mkdir -p $(VOLUMES_DIR)/website
 	mkdir -p $(VOLUMES_DIR)/database
+	$(bash ./tools/setup.sh)
 
 
 .PHONY: all setup build start stop down ps clean fclean re images network volume logs test
