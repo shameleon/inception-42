@@ -1,4 +1,4 @@
-FROM debian:buster
+FROM debian:bullseye
 
 RUN apt-get update && \
     apt install -y mariadb-server && \
@@ -8,10 +8,12 @@ RUN apt-get update && \
 
 COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/
 
-COPY ./tools/script.sh /
+COPY ./tools/script.sh /usr/local/bin
 
-RUN chmod +x /script.sh
+RUN chmod +x /usr/local/bin/script.sh
 
 EXPOSE 3306
 
-ENTRYPOINT ["/script.sh" ]
+ENTRYPOINT ["/usr/local/bin/script.sh" ]
+
+CMD ["mysqld"]
