@@ -1,5 +1,6 @@
 #!/bin/sh
-service mariadb start 
+
+service mariadb start;
 
 # chown -R mariadb:mariadb /var/lib/mariadb
 mariadb -u root -e "CREATE DATABASE IF NOT EXISTS ${DB_DATABASE};"
@@ -9,7 +10,10 @@ mariadb -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '${D
 mariadb -u root -e "FLUSH PRIVILEGES;"
 
 # disable root login without password
-# mariadb -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED by '${DB_ROOT_PASSWORD}';"
+mariadb -u root -e "ALTER USER 'root'@'127.0.0.1' IDENTIFIED by '${DB_ROOT_PASSWORD}';"
 mariadb -u root -p${DB_ROOT_PASSWORD} "CREATE DATABASE IF NOT EXISTS 'test'";
+sleep 5
+service mariadb stop;
 
-kill $(cat /var/run/mariadbd/mariadbd.pid)
+# restart the mariadb service ssafe mode
+exec $@
