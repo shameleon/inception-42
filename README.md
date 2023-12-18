@@ -37,7 +37,9 @@ Add the following line to nginx configuration file
 
 [installing-and-using-mariadb](https://mariadb.com/kb/en/installing-and-using-mariadb-via-docker/)
 
-[ALTER USER](https://dev.mysql.com/doc/refman/8.0/en/alter-user.html)
+[avoid ](https://linuxconfig.org/how-to-reset-root-mysql-mariadb-password-on-ubuntu-20-04-focal-fossa-linux)
+
+[ to reset root MySQL/MariaDB password ](https://dev.mysql.com/doc/refman/8.0/en/alter-user.html)
 `ALTER USER root@localhost IDENTIFIED BY PASSWORD '************';`
 
 forcing a TCP connection
@@ -83,10 +85,10 @@ SHOW COLUMNS FROM wp_posts;
 SELECT ID, post_author, post_date, post_title  FROM wp_posts;
 ```
 from mariadb container :
-| connect as root
-`mysql --user=root mysql`
-`mysql -u root -p`
-
+| connect as root without password : `mysql --user=root mysql`
+or `mysql -u root -p` should ask password. 
+`mysql -u root -p${DB_ROOT_PASSWORD}`
+`mysql -u jmouaike42 -p${DB_USER_PASSWORD}`
 `SHOW GRANTS FOR 'root'@'localhost';`
 
 from wordpress container :
