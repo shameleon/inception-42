@@ -85,10 +85,11 @@ SHOW COLUMNS FROM wp_posts;
 SELECT ID, post_author, post_date, post_title  FROM wp_posts;
 ```
 from mariadb container :
-| connect as root without password : `mysql --user=root mysql`
-or `mysql -u root -p` should ask password. 
-`mysql -u root -p${DB_ROOT_PASSWORD}`
-`mysql -u jmouaike42 -p${DB_USER_PASSWORD}`
+| connect as root without password :
+`mysql --user=root mysql`
+or `mysql -u root -p`                         should ask password. 
+`mysql -u root -p${DB_ROOT_PASSWORD}`         OK
+`mysql -u ${DB_USER} -p${DB_USER_PASSWORD}`   OK
 `SHOW GRANTS FOR 'root'@'localhost';`
 
 from wordpress container :

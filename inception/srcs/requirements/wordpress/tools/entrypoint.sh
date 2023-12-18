@@ -15,8 +15,6 @@ then
     wp core download --path=$WP_PATH --allow-root
 fi
 
-
-
 cd $WP_PATH;
 # Download core wordpress files to the public html, wordpress directory
 

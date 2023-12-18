@@ -13,8 +13,9 @@ lc-messages-dir         = /usr/share/mysql
 lc-messages             = en_US
 skip-external-locking
 
-# bind-address          = 127.0.0.1  
-bind-address            = 0.0.0.0    # external connections
+# bind-address          = 127.0.0.1
+# external connections  
+bind-address            = 0.0.0.0
 
 expire_logs_days        = 10
 character-set-server  = utf8mb4
