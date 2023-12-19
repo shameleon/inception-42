@@ -4,7 +4,7 @@
 test_maria:
 	cd $(WORK_DIR)
 	docker build -t my-mariadb ./srcs/requirements/mariadb/
-	docker run -tid --name testmariadb --env-file .env my-mariadb
+	docker run -tid --name testmariadb --env-file ./srcs/.env my-mariadb
 
 testmariadb:
 	docker exec -ti testmariadb bash
