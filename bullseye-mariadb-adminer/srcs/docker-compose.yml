@@ -12,7 +12,7 @@ services:
       - mynetwork               # Use mynetwork for communicate with mariadb
   
   mariadb:
-    container_name: Mariadb
+    container_name: mariadb
     build: ./requirements/mariadb
     image: mariadb
     restart: always

@@ -15,6 +15,7 @@ The command `vagrant up` will build the `VM`.
 #### MariaDB-adminer pair
 
 [](https://mariadb.com/kb/en/installing-and-using-mariadb-via-docker/)
+[](https://mariadb.com/kb/en/configuring-mariadb-with-option-files/)
 
 #### Installing wordpress
 
