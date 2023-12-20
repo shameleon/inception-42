@@ -59,6 +59,8 @@ same as php wp-cli.phar --info
 [wp-config](https://codex.wordpress.org/fr:Modifier_wp-config.php)
 [wp-cli commands](https://developer.wordpress.org/cli/commands/core/)
 
+cd $WP_PATH & wp config list --allow
+-root
 
 RUN apt update; \
 	apt install -y php7.3 php-mysqli php-fpm mariadb-client curl sendmail
