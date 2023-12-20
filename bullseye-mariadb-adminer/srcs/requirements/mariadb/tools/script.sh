@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# script.sh has to be run by ENTRYPOINT from mariadb dockerfile
 if [ ! -f "/run/mysqld/mysqld.pid" ];
 then
 	sed -i 's/= 127.0.0.1/= 0.0.0.0/' /etc/mysql/mariadb.conf.d/50-server.cnf
@@ -23,5 +24,5 @@ then
 	fi
 fi
 
-# restart the mariadb service in safe mode
+# Restart the mariadb service in safe mode
 exec "mysqld_safe";
