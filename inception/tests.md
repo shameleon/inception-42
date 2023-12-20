@@ -38,7 +38,7 @@ nginx -c /etc/nginx/nginx.conf -t
 COPY ./conf/nginx.conf /etc/nginx/conf.d
 
 etc/hosts
-⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿ ⣿⠀⣿⠀⠀
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀
 
 https://www.howtoforge.com/tutorial/dockerizing-wordpress-with-nginx-and-php-fpm/
 

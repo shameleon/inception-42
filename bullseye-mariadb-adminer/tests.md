@@ -35,7 +35,10 @@ Volume :  /home/jmouaike42/my_volume
 
 open in a browser http://jmouaike.42.fr
 
+adminer login window :
+```
 mariadb
 jmouaike42
 ************
 wordpress
+```

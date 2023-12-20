@@ -60,7 +60,7 @@ test:
 setup:
 	mkdir -p $(VOLUMES_DIR)/website
 	mkdir -p $(VOLUMES_DIR)/database
-	$(bash ./tools/setup.sh)
+	$(bash ./srcs/requirements//tools/setup.sh)
 
 
 .PHONY: all setup build start stop down ps clean fclean re images network volume logs test

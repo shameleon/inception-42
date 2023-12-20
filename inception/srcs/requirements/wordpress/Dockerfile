@@ -10,9 +10,7 @@ RUN apt-get update -y && \
 
 COPY ./conf/www.conf /etc/php/7.4/fpm/pool.d/
 
-COPY /tools/entrypoint.sh /usr/local/bin
-
-RUN chmod +x /usr/local/bin/entrypoint.sh
+COPY --chmod=0755 /tools/entrypoint.sh /usr/local/bin
 
 EXPOSE 9000
 

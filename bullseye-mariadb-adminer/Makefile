@@ -38,7 +38,7 @@ fclean: clean
 
 prune: down
 	docker image prune -a
-	sudo rm -rf $(DATA)
+	sudo rm -rf $(VOLUME)
 	# docker compose down --remove-orphans
 	# docker compose down --volumes
 	# docker compose rm -f
