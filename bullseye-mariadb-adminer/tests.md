@@ -1,34 +1,41 @@
-[Theo2lt inception readme](https://github.com/Theo2lt/Inception/tree/main)
-
-### Test MariaDB
+### Test MariaDB alone
 test_maria:
-	cd $(WORK_DIR)
-	docker build -t my-mariadb ./srcs/requirements/mariadb/
-	docker run -tid --name testmariadb --env-file ./srcs/.env my-mariadb
 
-testmariadb:
-	docker exec -ti testmariadb bash
+docker build -t my-mariadb ./srcs/requirements/mariadb/
+docker run -tid --name testmariadb --env-file ./srcs/.env my-mariadb
+docker exec -ti testmariadb bash
 
 check env :
-env
+	env
 
 check config :
-cat /etc/mysql/mariadb.conf.d/50-server.cnf
+	cat /etc/mysql/mariadb.conf.d/50-server.cnf
 
 start mysql to check users and database :
 mysql
 MariaDB [(none)]> SELECT user,host,password FROM mysql.user;
 MariaDB [(none)]> SHOW databases;
 
-### docker-compose
+### Adminer
 
-mkdir /home/jmouaike42/my_volume
+based on [Theo2lt inception readme](https://github.com/Theo2lt/Inception/tree/main) tutorial for testing `mariaDB` service.
 
-make
+port : 80
 
-http://jmouaike.42.fr
+### docker compose
 
-MariaDB
-user
-safepwd
+Services : `mariadb` and `adminer`.
+Volume :  /home/jmouaike42/my_volume
+
+### Makefile
+
+`make`.
+
+### Test mariadb-adminer pair
+
+open in a browser http://jmouaike.42.fr
+
+mariadb
+jmouaike42
+************
 wordpress

@@ -3,7 +3,7 @@ FROM debian:bullseye
 
 # UPDATE AND INSTALLATION
 RUN apt-get update 
-RUN apt install -y adminer 
+RUN apt-get install -y adminer 
 
 # COPY THE CONF FILE 
 COPY ./conf/000-default.conf /etc/apache2/sites-available/
