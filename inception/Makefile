@@ -1,26 +1,23 @@
 NAME 			:= inception
 DOCKER-COMPOSE 	:= ./srcs/docker-compose.yml
-ENV_FILE := ./srcs/.env
-VOLUMES_DIR := /home/jmouaike42/data
+ENV_FILE 		:= ./srcs/.env
+VOLUMES_DIR 	:= /home/jmouaike42/data
 
 all: build
 
 build: setup
+	echo $(OR) "⣿⣿⣿ Inception ⣿⣿⣿" $(RES)
 	docker compose -f $(DOCKER-COMPOSE) --env-file $(ENV_FILE) up -d --build
 
 start:
 	docker compose -f $(DOCKER-COMPOSE) start
 
-# containers stopped
 stop:
 	docker compose -f $(DOCKER-COMPOSE) stop
 
-
-# containers and network stopped
 down:
 	docker compose -f $(DOCKER-COMPOSE) down 
 
-# List containers. -a all 
 ps:
 	docker ps
 
@@ -28,16 +25,17 @@ clean: stop
 	docker compose -f $(DOCKER-COMPOSE) down
 
 fclean: clean
-# Remove one or more images. -f Force removal of the image
-	docker rmi -f $$(docker images -qa) >> /dev/null
-# docker volume rm $$(docker volume ls | grep ) >> /dev/null
-# docker network rm $$(docker network ls) >> /dev/null
+	docker rmi -f $$(docker images -qa)
+	docker volume rm $$(docker volume ls ) > /dev/null 2>&1
+	docker network rm $$(docker network ls) > /dev/null 2>&1
 
 prune: down
+	echo $(PK) "⣿⣿⣿ make prune ⣿⣿⣿" $(RES)
 	docker image prune -a
 	sudo rm -rf $(VOLUMES_DIR)
 	docker compose -f $(DOCKER-COMPOSE) down --remove-orphans
 	docker compose -f $(DOCKER-COMPOSE) down --volumes
+	sudo sed -i '1s/jmouaike.42.fr www.jmouaike.42.fr/localhost/' '/etc/hosts'
 
 re: fclean all
 	
@@ -54,13 +52,18 @@ volume:
 logs:
 	docker logs -t -f $$(docker compose -f $(DOCKER-COMPOSE) ps -q nginx)
 
-test:
-	wget --spider -S https://jmouaike.42.fr --no-check certificate
-
 setup:
 	mkdir -p $(VOLUMES_DIR)/website
 	mkdir -p $(VOLUMES_DIR)/database
-	$(bash ./tools/setup.sh)
+	$(bash ./srcs/requirements/tools/setup.sh)
 
+help:
+	echo $(OR)Inception $(PK)help$(RES)
 
-.PHONY: all setup build start stop down ps clean fclean re images network volume logs test
+.PHONY: all build start stop down ps clean fclean \
+		re images network volume logs setup help
+
+#### ANSI escape codes ###
+OR = "\33[1;38:5:214m"
+PK = "\33[1;95:185:55m"
+RES = "\33[0m"

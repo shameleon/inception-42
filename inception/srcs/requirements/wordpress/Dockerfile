@@ -1,7 +1,7 @@
 FROM debian:bullseye
 
 RUN apt-get update -y && \
-    apt-get install -y curl php php-fpm php-mysqli mariadb-client && \
+    apt-get install -y curl php php-fpm php-mysql mariadb-client && \
     mkdir -p /run/php && \
     curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
     chmod +x wp-cli.phar && \
@@ -10,9 +10,7 @@ RUN apt-get update -y && \
 
 COPY ./conf/www.conf /etc/php/7.4/fpm/pool.d/
 
-COPY /tools/entrypoint.sh /usr/local/bin
-
-RUN chmod +x /usr/local/bin/entrypoint.sh
+COPY --chmod=0755 /tools/entrypoint.sh /usr/local/bin
 
 EXPOSE 9000
 

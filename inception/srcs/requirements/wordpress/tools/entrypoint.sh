@@ -11,7 +11,7 @@
 
 if ! [ -d $WP_PATH ];
 then
-    putBlue "✔ Core download"
+    echo "Inception : ✔ Wordpress Core download"
     wp core download --path=$WP_PATH --allow-root
 fi
 
@@ -49,7 +49,7 @@ else
     echo "wp-config.php file generated"
 
     # print config for debug
-    # wp config list --allow-root
+    wp config list --allow-root
 
     ######################################################################
     # Runs the standard WordPress installation process.

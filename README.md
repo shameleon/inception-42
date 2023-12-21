@@ -1,23 +1,141 @@
-# inception-42
+# Inception-42
 
-### Setup
+## Subject
+
+`Inception` project is about setting up and running a small infrastructure of services in order to have a functional `wordpress` website, with `nginx` as web-server and a database relying on `MariaDB` service. 
+As it is forbidden to pull and use ready-made `docker images` from `DockerHub` for these services. The image for each of the given services (`nginx`, `wordpress`, `MariaDB`) has to be build from a `Dockerfile` solely based on the `image` of either `Alpine` or `Debian` (penultimate stable version). 
+It is mandatory to be using `docker compose`, through a `Makefile` to coordinate the services, while building them and running them, and for maintaing a user-defined network between these services.
+It is also mandatory to use an `.env` file for `docker compose`.
+
+---
+
+### Services
+
+• A Docker container that contains NGINX with TLSv1.2 or TLSv1.3 only.
+• A Docker container that contains WordPress + php-fpm (it must be installed and
+configured) only without nginx.
+• A Docker container that contains MariaDB only without nginx.
+
+---
+
+### Volumes and Network
+
+• A volume that contains your WordPress database.
+• A second volume that contains your WordPress website files.
+
+• A docker-network that establishes the connection between your containers.
+
+```
+Nginx     <-- port 443 TLS --> web browsing 
+Nginx     <-- port 9000    --> Wordpress
+Wordpress <-- port 3306    --> MariaDB
+```
+---
+
+### Forbidden
+- Pulling `DockerHub` images other than `alpine` or `debian`.
+- `network: host` or `--link` or `links:`.
+
+## Installation
+
+### Virtual machine (VM)
+
+In order to have a isolated, secure and reproducible environment both for developping and running, I chose `Vagrant`. Virtual machine was built with `Vagrant` based on `Vagrantfile`.
 
 #### Prerequisites
 
-`Virtualbox manager` and `Vagrant` should be installed.
+`Virtualbox manager` and `Vagrant` should be installed ON 42's workstation. Otherwise, they are needed.
 
-#### Virtual machine 
+#### Vagrantfile
 
-Virtual machine was built with `Vagrant` based on `Vagrantfile`.
+Vagrantfile based on [Vagrant to jumpstart your development into 42 project : Inception ](https://github.com/hel-kame/inception_vagrant.git). Docker will be installed and user will be in `sudo` and `docker` groups.
 
-The command `vagrant up` will build the `VM`.
+Some `Vagrantfile` changes with my username and to add `VScode`.
 
-#### MariaDB-adminer pair
+```sudo snap install code --classic```
 
-[](https://mariadb.com/kb/en/installing-and-using-mariadb-via-docker/)
 
-#### Installing wordpress
+#### vagrant up
 
+Place the Vagrantfile in a dedicated directory on `sgoinfre`.
+Then from thisdirectory, type the command `vagrant up`. That will build the `VM`.
+
+Default password is `vagrant`.
+
+#### VM setups
+
+Change docker permissions to run `docker` command without `sudo`
+
+```shell
+# to run docker command without sudo :
+chmod 777 /var/run/docker.sock
+ls -l /var/run/docker.sock
+```
+
+- Github settings 
+
+```shell
+git config --global user.email "####"
+git config --global user.name "####"
+ssh-keygen -t ed25519  -C "####@###.com"
+cat home/####42/.ssh/id_ed25519.pub
+# copy and add the public key to github account settings/SSH
+# test github :
+eval "$(ssh-agent -s)"
+ssh -T git@github.com
+```
+
+- Setup `Domain Name System` (DNS)
+Editing `/etc/hosts` file :
+```127.0.0.1 localhost``` changes to
+
+```hack
+# 127.0.0.1 localhost
+127.0.0.1 jmouaike.42.fr www.jmouaike.42.fr
+```
+
+### Usage
+
+From the `VM`, `git clone` the repo `inception-42`.
+
+#### .env file : environment variables
+
+An `.env` file should be present in `requirements` directory since it is needed by `docker compose`.
+
+Here is a model for `.env` file :
+```
+# docker-compose environment file
+DOMAIN_NAME=jmouaike.42.fr
+
+WP_PATH=/var/www/html/wordpress
+
+WP_TITLE=Inception
+
+WP_ADMIN=
+WP_ADMIN_PASSWORD=
+WP_ADMIN_EMAIL=
+WP_USER=
+WP_USER_PASSWORD=
+WP_USER_EMAIL=
+
+DB_HOST=mariadb
+DB_TABLE_PREFIX=wp_
+DB_SERVER=MariaDB
+DB_USER=
+DB_USER_PASSWORD=
+DB_ROOT_PASSWORD=
+DB_DATABASE=wordpress
+```
+#### Launch the Make
+
+`cd inception & make` will build and run the infrastrure of services.
+
+Provided `/etc/hosts` changes above were made, the website should be pointing to `https://jmouaike.42.fr/` or  `https://www.jmouaike.42.fr/`.
+
+
+## Useful links and reading
+
+###
 ##### wordpress-CLI 
 
 [wp-CLI](https://www.hostinger.fr/tutoriels/wp-cli)
@@ -46,15 +164,15 @@ forcing a TCP connection
 `mysql -h 172.17.0.2 -P 3306 --protocol=TCP -u root -p`
 
 
-### Evaluation
+## Evaluation
 
-#### Explanations
+### Explanations
 
 How Docker and docker-compose work
 
 `make ps` `docker ps` 
 
-#### Docker compose
+### Docker compose
 $ docker compose version
 Docker Compose version v2.18.1
 $ docker version
@@ -62,7 +180,7 @@ Client: Docker Engine - Community
  Version:           24.0.2
 [ Compose file format versions](https://docs.docker.com/compose/compose-file/compose-file-v3/)
 
-#### MariaDB
+### MariaDB
 
 testmariadb:
 `docker exec -ti mariadb bash`
