@@ -32,8 +32,8 @@ clean: stop
 
 fclean: clean
 # Remove one or more images. -f Force removal of the image
-	docker rmi -f $$(docker images -qa) >> /dev/null
-# docker volume rm $$(docker volume ls) >> /dev/null
+	docker rmi -f $$(docker images -qa) > /dev/null 2>&1
+	docker volume rm $$(docker volume ls) > /dev/null 2>&1
 #	docker network rm $$(docker network ls) >> /dev/null
 
 prune: down
