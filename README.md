@@ -97,6 +97,37 @@ Editing `/etc/hosts` file :
 ### Usage
 
 From the `VM`, `git clone` the repo `inception-42`.
+
+#### .env file : environment variables
+
+An `.env` file should be present in `requirements` directory since it is needed by `docker compose`.
+
+Here is a model for `.env` file :
+```
+# docker-compose environment file
+DOMAIN_NAME=jmouaike.42.fr
+
+WP_PATH=/var/www/html/wordpress
+
+WP_TITLE=Inception
+
+WP_ADMIN=
+WP_ADMIN_PASSWORD=
+WP_ADMIN_EMAIL=
+WP_USER=
+WP_USER_PASSWORD=
+WP_USER_EMAIL=
+
+DB_HOST=mariadb
+DB_TABLE_PREFIX=wp_
+DB_SERVER=MariaDB
+DB_USER=
+DB_USER_PASSWORD=
+DB_ROOT_PASSWORD=
+DB_DATABASE=wordpress
+```
+#### Launch the Make
+
 `cd inception & make` will build and run the infrastrure of services.
 
 Provided `/etc/hosts` changes above were made, the website should be pointing to `https://jmouaike.42.fr/` or  `https://www.jmouaike.42.fr/`.
