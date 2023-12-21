@@ -31,10 +31,9 @@ clean: stop
 	docker compose -f $(DOCKER-COMPOSE) down
 
 fclean: clean
-# Remove one or more images. -f Force removal of the image
 	docker rmi -f $$(docker images -qa) > /dev/null 2>&1
 	docker volume rm $$(docker volume ls) > /dev/null 2>&1
-#	docker network rm $$(docker network ls) >> /dev/null
+	docker network rm $$(docker network ls) > /dev/null 2>&1l
 
 prune: down
 	docker image prune -a
