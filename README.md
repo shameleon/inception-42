@@ -16,8 +16,6 @@ It is also mandatory to use an `.env` file for `docker compose`.
 configured) only without nginx.
 • A Docker container that contains MariaDB only without nginx.
 
----
-
 ### Volumes and Network
 
 • A volume that contains your WordPress database.
@@ -30,12 +28,12 @@ Nginx     <-- port 443 TLS --> web browsing
 Nginx     <-- port 9000    --> Wordpress
 Wordpress <-- port 3306    --> MariaDB
 ```
----
 
 ### Forbidden
 - Pulling `DockerHub` images other than `alpine` or `debian`.
 - In `docker-compose.yml` : `network: host` or `--link` or `links:`.
 
+---
 
 ## Installation
 
@@ -93,7 +91,12 @@ ssh -T git@github.com
 
 `make prune` command will revert  `/etc/hosts` file to ```127.0.0.1 localhost```
 
+---
+
 ### Usage
+
+---
+
 
 From the `VM`, `git clone` the repo `inception-42`.
 
@@ -139,6 +142,7 @@ DB_DATABASE=wordpress
 
 Provided `/etc/hosts` changes above were made, the website should be pointing to `https://jmouaike.42.fr/` or  `https://www.jmouaike.42.fr/`.
 
+---
 
 ## Useful links and reading
 
@@ -217,17 +221,21 @@ Add the following line to nginx configuration file
 
 [10 Nginx Rules to Harden WordPress Security](https://www.hongkiat.com/blog/nginx-rules-for-wordpress-security/)
 
+---
+
 ## Evaluation
+
+---
 
 ### Explanations
 
-#### How Docker and docker-compose work.
+- How Docker and docker-compose work.
 
-#### The difference between a Docker image used with docker-compose and without docker-compose.
+- The difference between a Docker image used with docker-compose and without docker-compose.
 
-#### The benefit of Docker compared to VMs.
+- The benefit of Docker compared to VMs.
 
-#### The pertinence of the directory structure required for this project.
+- The pertinence of the directory structure required for this project.
 
 
 ### Test inception services
@@ -266,19 +274,13 @@ SELECT ID, user_login, user_email FROM wp_users;
 SHOW COLUMNS FROM wp_posts;
 SELECT ID, post_author, post_date, post_title  FROM wp_posts;
 ```
-from mariadb container :
-| connect as root without password :
-`mysql --user=root mysql`
-or `mysql -u root -p`                         should ask password. 
+
+From mariadb container, connect as root without password `mysql --user=root mysql` or `mysql -u root -p` should ask password. 
+
 `mysql -u root -p${DB_ROOT_PASSWORD}`         OK
+
 `mysql -u ${DB_USER} -p${DB_USER_PASSWORD}`   OK
+
 `SHOW GRANTS FOR 'root'@'localhost';`
 
-from wordpress container :
-
-
-
-#### 
-wordpress login :
-`https://jmouaike.42.fr/wp-login.php`
-`https://jmouaike.42.fr/wp-admin/`
+---
