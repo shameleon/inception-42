@@ -1,3 +1,7 @@
+#############################################################
+# Makefile for inception
+#############################################################
+
 NAME 			:= inception
 DOCKER-COMPOSE 	:= ./srcs/docker-compose.yml
 ENV_FILE 		:= ./srcs/.env
@@ -26,8 +30,8 @@ clean: stop
 
 fclean: clean
 	docker rmi -f $$(docker images -qa)
-	docker volume rm $$(docker volume ls ) > /dev/null 2>&1
-	docker network rm $$(docker network ls) > /dev/null 2>&1
+	docker volume rm $$(docker volume ls ) 2>/dev/null
+	docker network rm $$(docker network ls) 2>/dev/null
 
 prune: down
 	echo $(PK) "⣿⣿⣿ make prune ⣿⣿⣿" $(RES)

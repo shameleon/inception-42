@@ -86,13 +86,11 @@ ssh -T git@github.com
 ```
 
 - Setup `Domain Name System` (DNS)
-Editing `/etc/hosts` file :
-```127.0.0.1 localhost``` changes to
 
-```hack
-# 127.0.0.1 localhost
-127.0.0.1 jmouaike.42.fr www.jmouaike.42.fr
-```
+`make` command will execute the bash script `./srcs/requirements/tools/setup.sh ` that will be changing `/etc/hosts` file :
+```127.0.0.1 localhost``` to domain name ```127.0.0.1 jmouaike.42.fr www.jmouaike.42.fr```.
+
+`make prune` command will revert  `/etc/hosts` file to ```127.0.0.1 localhost```
 
 ### Usage
 
@@ -103,7 +101,8 @@ From the `VM`, `git clone` the repo `inception-42`.
 An `.env` file should be present in `requirements` directory since it is needed by `docker compose`.
 
 Here is a model for `.env` file :
-```
+
+```hack
 # docker-compose environment file
 DOMAIN_NAME=jmouaike.42.fr
 
@@ -126,6 +125,7 @@ DB_USER_PASSWORD=
 DB_ROOT_PASSWORD=
 DB_DATABASE=wordpress
 ```
+
 #### Launch the Make
 
 `cd inception & make` will build and run the infrastrure of services.
@@ -135,8 +135,11 @@ Provided `/etc/hosts` changes above were made, the website should be pointing to
 
 ## Useful links and reading
 
-###
+`docker` and `docker compose` ressources 
+### configuration
 ##### wordpress-CLI 
+
+[WP-CLI Commands](https://developer.wordpress.org/cli/commands/)
 
 [wp-CLI](https://www.hostinger.fr/tutoriels/wp-cli)
 
