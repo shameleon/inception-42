@@ -30,5 +30,3 @@ fi
 if [[ "$dns" = "$domain" ]]; then
     echo -e "Domain${GR} [ok] ${YL} $dns $dns2${NC}"
 fi
-
-docker stop $(docker ps -qa) & docker rm $(docker ps -qa) & docker rmi -f $(docker images -qa) & docker volume rm $(docker volume ls -q)
