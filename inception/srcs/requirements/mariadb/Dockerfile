@@ -10,4 +10,4 @@ COPY --chmod=0755 ./tools/script.sh /usr/local/bin/
 
 EXPOSE 3306
 
-ENTRYPOINT ["/usr/local/bin/script.sh" ]
+ENTRYPOINT ["/usr/local/bin/script.sh"]

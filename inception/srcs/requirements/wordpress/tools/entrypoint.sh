@@ -5,18 +5,19 @@
 #######################################################
 
 # wp is /usr/local/bin/wp (wp-cli.phar)
+# [WP-CLI Commands](https://developer.wordpress.org/cli/commands/)
+
 ########################################################################
 # Download core wordpress files to the public html, wordpress directory
 ########################################################################
 
 if ! [ -d $WP_PATH ];
 then
-    echo "Inception : ✔ Wordpress Core download"
+    echo "Inception : ✔ Download core wordpress files to /var/www/html/"
     wp core download --path=$WP_PATH --allow-root
 fi
 
 cd $WP_PATH;
-# Download core wordpress files to the public html, wordpress directory
 
 if [ -f wp-config.php ] && wp config has DB_PASSWORD --allow-root;
 then
@@ -27,8 +28,8 @@ else
     # wp config create --allow-root --dbhost=$DB_HOST \
     # --dbname=$DB_DATABASE --dbprefix=$DB_TABLE_PREFIX \
     # --dbuser=$DB_USER --dbpass=$DB_PASSWORD --path="."
-    # Error: Database connection error (1045) Access denied for user 'user'@'wordpress.inception-db' (using password: NO)
-
+    # Error: Database connection error (1045) Access denied [...]
+    ######################################################################
     cp wp-config-sample.php wp-config.php
 
     ######################################################################
@@ -37,10 +38,12 @@ else
     wp config set --allow-root DB_HOST $DB_HOST --path="."
     wp config set --allow-root DB_NAME $DB_DATABASE --path="." 
     wp config set --allow-root DB_USER $DB_USER --path="."
-    wp config set --allow-root DB_PASSWORD "${DB_USER_PASSWORD}" --path="."
+    wp config set --allow-root DB_PASSWORD "${DB_USER_PASSWORD}" --path="." --quiet
     wp config set --allow-root table_prefix $DB_TABLE_PREFIX --path="."
-    wp config set --allow-root WP_DEBUG true --path="." --raw
-    wp config set --allow-root WP_DEBUG_LOG true --path="." --raw
+    wp config set --allow-root WP_DEBUG false --path="." --raw
+    wp config set --allow-root WP_DEBUG_LOG false --path="." --raw
+    # wp config set --allow-root WP_DEBUG true --path="." --raw
+    # wp config set --allow-root WP_DEBUG_LOG true --path="." --raw
     # [--raw] : Place the value into the wp-config.php file as is, instead of as a quoted string.
 
     # Refreshes the salts defined in the wp-config.php file.
@@ -49,7 +52,7 @@ else
     echo "wp-config.php file generated"
 
     # print config for debug
-    wp config list --allow-root
+    # wp config list --allow-root
 
     ######################################################################
     # Runs the standard WordPress installation process.
@@ -68,7 +71,7 @@ else
     # Create user
     wp user create --path=$WP_PATH --allow-root \
         $WP_USER $WP_USER_EMAIL --user_pass=$WP_USER_PASSWORD \
-        --role=author
+        --role=author --porcelain
 fi
 
 ######################################################################

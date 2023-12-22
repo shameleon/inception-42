@@ -12,6 +12,7 @@ NC='\033[0m'
 # and changing localhost to domain name
 # only if 127.0.0.1 is at the first lines of the file
 #############################################################
+
 target='/etc/hosts'
 localhost="localhost"
 domain="jmouaike.42.fr"

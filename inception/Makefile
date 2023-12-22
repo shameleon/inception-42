@@ -1,12 +1,16 @@
+#############################################################
+# Makefile for inception
+#############################################################
+
 NAME 			:= inception
-DOCKER-COMPOSE 	:= ./srcs/docker-compose.yml
+DOCKER-COMPOSE 	:= ./srcs/docker-compose.yaml
 ENV_FILE 		:= ./srcs/.env
 VOLUMES_DIR 	:= /home/jmouaike42/data
 
 all: build
 
 build: setup
-	echo $(OR) "⣿⣿⣿ Inception ⣿⣿⣿" $(RES)
+	@echo $(OR) "⣿⣿⣿ Inception ⣿⣿⣿" $(RES)
 	docker compose -f $(DOCKER-COMPOSE) --env-file $(ENV_FILE) up -d --build
 
 start:
@@ -25,17 +29,19 @@ clean: stop
 	docker compose -f $(DOCKER-COMPOSE) down
 
 fclean: clean
-	docker rmi -f $$(docker images -qa)
-	docker volume rm $$(docker volume ls ) > /dev/null 2>&1
-	docker network rm $$(docker network ls) > /dev/null 2>&1
-
-prune: down
-	echo $(PK) "⣿⣿⣿ make prune ⣿⣿⣿" $(RES)
-	docker image prune -a
-	sudo rm -rf $(VOLUMES_DIR)
 	docker compose -f $(DOCKER-COMPOSE) down --remove-orphans
 	docker compose -f $(DOCKER-COMPOSE) down --volumes
-	sudo sed -i '1s/jmouaike.42.fr www.jmouaike.42.fr/localhost/' '/etc/hosts'
+
+# docker rmi -f $(docker images -qa)
+# docker volume rm $(docker volume ls ) 2>/dev/null
+# docker network rm $(docker network ls) 2>/dev/null
+
+prune:
+	@echo $(PK) "⣿⣿⣿ make prune ⣿⣿⣿" $(RES)
+	docker image prune -a
+	sudo rm -rf $(VOLUMES_DIR)
+	@sudo sed -i '1s/jmouaike.42.fr www.jmouaike.42.fr/localhost/' '/etc/hosts'
+	@sudo cat /etc/hosts | head -n 1
 
 re: fclean all
 	
@@ -55,10 +61,10 @@ logs:
 setup:
 	mkdir -p $(VOLUMES_DIR)/website
 	mkdir -p $(VOLUMES_DIR)/database
-	$(bash ./srcs/requirements/tools/setup.sh)
+	sudo bash ./srcs/requirements/tools/setup.sh
 
 help:
-	echo $(OR)Inception $(PK)help$(RES)
+	@echo $(OR)Inception $(PK)help$(RES)
 
 .PHONY: all build start stop down ps clean fclean \
 		re images network volume logs setup help

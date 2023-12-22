@@ -16,8 +16,6 @@ It is also mandatory to use an `.env` file for `docker compose`.
 configured) only without nginx.
 • A Docker container that contains MariaDB only without nginx.
 
----
-
 ### Volumes and Network
 
 • A volume that contains your WordPress database.
@@ -30,11 +28,12 @@ Nginx     <-- port 443 TLS --> web browsing
 Nginx     <-- port 9000    --> Wordpress
 Wordpress <-- port 3306    --> MariaDB
 ```
----
 
 ### Forbidden
 - Pulling `DockerHub` images other than `alpine` or `debian`.
-- `network: host` or `--link` or `links:`.
+- In `docker-compose.yml` : `network: host` or `--link` or `links:`.
+
+---
 
 ## Installation
 
@@ -86,15 +85,18 @@ ssh -T git@github.com
 ```
 
 - Setup `Domain Name System` (DNS)
-Editing `/etc/hosts` file :
-```127.0.0.1 localhost``` changes to
 
-```hack
-# 127.0.0.1 localhost
-127.0.0.1 jmouaike.42.fr www.jmouaike.42.fr
-```
+`make` command will execute the bash script `./srcs/requirements/tools/setup.sh ` that will be changing `/etc/hosts` file :
+```127.0.0.1 localhost``` to domain name ```127.0.0.1 jmouaike.42.fr www.jmouaike.42.fr```.
+
+`make prune` command will revert  `/etc/hosts` file to ```127.0.0.1 localhost```
+
+---
 
 ### Usage
+
+---
+
 
 From the `VM`, `git clone` the repo `inception-42`.
 
@@ -103,7 +105,8 @@ From the `VM`, `git clone` the repo `inception-42`.
 An `.env` file should be present in `requirements` directory since it is needed by `docker compose`.
 
 Here is a model for `.env` file :
-```
+
+```hack
 # docker-compose environment file
 DOMAIN_NAME=jmouaike.42.fr
 
@@ -126,59 +129,128 @@ DB_USER_PASSWORD=
 DB_ROOT_PASSWORD=
 DB_DATABASE=wordpress
 ```
+
+[Best practices for working with environment variables in Docker Compose](https://docs.docker.com/compose/environment-variables/best-practices/)
+
+[Best  Practices when using Docker Compose](https://hackmamba.io/blog/2022/09/best-practices-when-using-docker-compose/)
+
+[Use secrets](https://docs.docker.com/compose/use-secrets/)
+
 #### Launch the Make
 
 `cd inception & make` will build and run the infrastrure of services.
 
 Provided `/etc/hosts` changes above were made, the website should be pointing to `https://jmouaike.42.fr/` or  `https://www.jmouaike.42.fr/`.
 
+---
 
 ## Useful links and reading
 
-###
-##### wordpress-CLI 
+### Docker
 
-[wp-CLI](https://www.hostinger.fr/tutoriels/wp-cli)
+Many `docker` and `docker compose` ressources are available.
 
-##### wp-config.php file
+[Docker docs](https://docs.docker.com/)
 
-[Le fichier wp-config.php de WordPress : Optimisation, sécurité ](https://www.wpserveur.net/fichier-wp-config-wordpress/)
+[Docker Compose overview](https://docs.docker.com/compose/)
 
-[wp-config file](https://themes.artbees.net/blog/configuring-wordpress-in-wpconfig-php-file/)
-
-[why you should protect you wp-config file ](https://medium.com/stolabs/why-should-you-protect-your-wp-config-php-file-d1d1e6c0d6e6)
-
-Add the following line to nginx configuration file 
-`location ~* wp-config.php { deny all; }`
-
-##### MariaDB
-
-[installing-and-using-mariadb](https://mariadb.com/kb/en/installing-and-using-mariadb-via-docker/)
-
-[avoid ](https://linuxconfig.org/how-to-reset-root-mysql-mariadb-password-on-ubuntu-20-04-focal-fossa-linux)
-
-[ to reset root MySQL/MariaDB password ](https://dev.mysql.com/doc/refman/8.0/en/alter-user.html)
-`ALTER USER root@localhost IDENTIFIED BY PASSWORD '************';`
-
-forcing a TCP connection
-`mysql -h 172.17.0.2 -P 3306 --protocol=TCP -u root -p`
-
-
-## Evaluation
-
-### Explanations
-
-How Docker and docker-compose work
-
-`make ps` `docker ps` 
-
-### Docker compose
+#### Docker compose
 $ docker compose version
 Docker Compose version v2.18.1
 $ docker version
 Client: Docker Engine - Community
  Version:           24.0.2
 [ Compose file format versions](https://docs.docker.com/compose/compose-file/compose-file-v3/)
+
+#### Docker images
+
+The `debian:bullseye` is the penultimate version for Debian. `debian:bookworm` being the latest stable.
+
+```dockerfile
+FROM debian:bullseye
+```
+
+### Services configuration
+
+#### MariaDB
+
+[Installing-and-using-mariadb](https://mariadb.com/kb/en/installing-and-using-mariadb-via-docker/)
+
+
+To avoid `root`` login without password
+To change root MySQL/MariaDB password :
+
+[Alter root password ](https://dev.mysql.com/doc/refman/8.0/en/alter-user.html)
+`ALTER USER root@localhost IDENTIFIED BY PASSWORD '************';`
+
+[how-to-reset-root-mysql-mariadb-password ](https://linuxconfig.org/how-to-reset-root-mysql-mariadb-password-on-ubuntu-20-04-focal-fossa-linux)
+
+forcing a TCP connection
+`mysql -h 172.17.0.2 -P 3306 --protocol=TCP -u root -p`
+
+#### Nginx
+
+[Creating NGINX Plus and NGINX Configuration Files](https://docs.nginx.com/nginx/admin-guide/basic-functionality/managing-configuration-files/)
+
+[Examples of NGINX configuration for WordPress](https://www.nginx.com/resources/wiki/start/topics/recipes/wordpress/)
+
+#### wordpress-CLI 
+
+[WP-CLI Commands](https://developer.wordpress.org/cli/commands/)
+
+[wp-CLI](https://www.hostinger.fr/tutoriels/wp-cli)
+
+#### wp-config.php file
+
+Wordpress `wp-config.php` is in `/var/www/html/wordpress/` directory and is setup
+
+[Le fichier wp-config.php de WordPress : Optimisation, sécurité ](https://www.wpserveur.net/fichier-wp-config-wordpress/)
+
+[wp-config file](https://themes.artbees.net/blog/configuring-wordpress-in-wpconfig-php-file/)
+
+#### To go further
+
+[Best practice secure NGINX configuration for WordPress](https://www.getpagespeed.com/server-setup/nginx/best-practice-secure-nginx-configuration-for-wordpress#)
+
+[why you should protect you wp-config file ](https://medium.com/stolabs/why-should-you-protect-your-wp-config-php-file-d1d1e6c0d6e6)
+
+Add the following line to nginx configuration file 
+`location ~* wp-config.php { deny all; }`
+
+[Harden Wordpress security](https://gist.github.com/nfsarmento/57db5abba08b315b67f174cd178bea88)
+
+[10 Nginx Rules to Harden WordPress Security](https://www.hongkiat.com/blog/nginx-rules-for-wordpress-security/)
+
+---
+
+## Evaluation
+
+---
+
+### Explanations
+
+- How Docker and docker-compose work.
+
+- The difference between a Docker image used with docker-compose and without docker-compose.
+
+- The benefit of Docker compared to VMs.
+
+- The pertinence of the directory structure required for this project.
+
+
+### Test inception services
+
+#### make
+
+Before the `make` command to build and run the project set of services, be sure to remove any leftovers :
+
+```shell
+docker stop $(docker ps -qa) & docker rm $(docker ps -qa) & docker rmi -f $(docker images -qa) & docker volume rm $(docker volume ls -q)
+```
+
+`make` command to build and run the project. the service should be running
+
+`make ps` is `docker ps` 
 
 ### MariaDB
 
@@ -202,25 +274,13 @@ SELECT ID, user_login, user_email FROM wp_users;
 SHOW COLUMNS FROM wp_posts;
 SELECT ID, post_author, post_date, post_title  FROM wp_posts;
 ```
-from mariadb container :
-| connect as root without password :
-`mysql --user=root mysql`
-or `mysql -u root -p`                         should ask password. 
+
+From mariadb container, connect as root without password `mysql --user=root mysql` or `mysql -u root -p` should ask password. 
+
 `mysql -u root -p${DB_ROOT_PASSWORD}`         OK
+
 `mysql -u ${DB_USER} -p${DB_USER_PASSWORD}`   OK
+
 `SHOW GRANTS FOR 'root'@'localhost';`
 
-from wordpress container :
-
-#### Wordpress database
-
-[Wordpress database scheme](https://codex.wordpress.org/Database_Description)
-
-[wordpress-database-schema](https://blogvault.net/wordpress-database-schema/)
-
-
-
-#### 
-wordpress login :
-`https://jmouaike.42.fr/wp-login.php`
-`https://jmouaike.42.fr/wp-admin/`
+---
