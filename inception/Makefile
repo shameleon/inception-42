@@ -37,7 +37,7 @@ fclean: clean
 # docker network rm $(docker network ls) 2>/dev/null
 
 prune:
-	@echo $(PK) "⣿⣿⣿ make prune ⣿⣿⣿" $(RES)
+	@echo $(PK) "⣿⣿⣿ make prune ⣿⣿⣿ "$(RES)
 	docker image prune -a
 	sudo rm -rf $(VOLUMES_DIR)
 	@sudo sed -i '1s/jmouaike.42.fr www.jmouaike.42.fr/localhost/' '/etc/hosts'

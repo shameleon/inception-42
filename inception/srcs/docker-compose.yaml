@@ -45,8 +45,8 @@ services:
     ports:
       - "443:443"
     volumes:
-      - ./logs/nginx:/var/log/nginx/
       - website:/var/www/html/
+      # - ./logs/nginx:/var/log/nginx/
     networks:
       - inception-network
     restart: always
