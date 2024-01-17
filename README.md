@@ -1,5 +1,7 @@
 # Inception-42
 
+![Static Badge](https://img.shields.io/badge/42_peer_validation_grade-100-green)
+
 ## Subject
 
 `Inception` project is about setting up and running a small infrastructure of services in order to have a functional `wordpress` website, with `nginx` as web-server and a database relying on `MariaDB` service. 
